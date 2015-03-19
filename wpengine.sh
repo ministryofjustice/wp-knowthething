@@ -25,6 +25,10 @@ rm .gitignore
 echo "/*\n!wp-content/\nwp-content/uploads" >> .gitignore
 git ls-files | xargs git rm --cached
 
+cd wp-content/
+find . | grep .git | xargs rm -rf
+cd ../
+
 git add .
 git commit -am "Setting up WPEngine build."
 if [ "$environment" == "staging" ]
