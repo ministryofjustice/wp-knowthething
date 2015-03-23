@@ -21,6 +21,9 @@ git checkout -b wpengine
 
 cp -r web/app wp-content
 rm "wp-content/themes/${theme}/.gitignore"
+rm "wp-content/mu-plugins/bedrock-autoloader.php"
+rm "wp-content/mu-plugins/disallow-indexing.php"
+rm "wp-content/mu-plugins/register-theme-directory.php"
 rm .gitignore
 echo "/*\n!wp-content/\nwp-content/uploads" >> .gitignore
 git ls-files | xargs git rm --cached
