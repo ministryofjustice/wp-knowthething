@@ -274,6 +274,7 @@ function embed_convert($matches) {
 
 function get_image_id($image_url) {
   global $wpdb;
+  $image_url = preg_replace('/-\d{2,4}x\d{2,4}/i', '', $image_url);
   $attachment = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE guid='%s';", $image_url ));
   if(!empty($attachment[0])) {
     return $attachment[0];

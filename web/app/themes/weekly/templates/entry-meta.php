@@ -3,5 +3,5 @@
     <?= get_the_author(); ?>
   </a>
   <time class="updated" datetime="<?= get_the_time('c'); ?>"> about <?= human_time_diff( get_the_time('U')) . ' ago'; ?></time>
-  | <a href="<?= the_permalink(); ?>#comments"><?= $c = get_comments_number(); ?> comments</a>
+   | <a href="<?= the_permalink(); ?>#comments"><?= $c = get_comments_number(); ?> comments</a>
 </p>
