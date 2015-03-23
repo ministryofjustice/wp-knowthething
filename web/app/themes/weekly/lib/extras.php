@@ -195,6 +195,13 @@ function submit_form() {
      /([^&]+)                    # URI with video id as capture group 1
      ~x';
 
+  $notags = strip_tags(str_replace(" ", "", $output['content']));
+
+  if(preg_match($youtube, $notags, $video_matches) != 0) {
+    $video = $video_matches[0];
+  } elseif(preg_match($youtube, $notags, $video_matches) != 0) {
+    $video = $video_matches[0];
+  }
 
   foreach($matches[0] as $match) {
     if(preg_match($youtube, $match, $video_matches) != 0) {
