@@ -1,6 +1,8 @@
 environment=$1
 theme="sage"
 
+
+
 if [ "$environment" == "staging" ]
 then
   git checkout develop
@@ -11,6 +13,14 @@ else
   echo "Invalid environment."
   exit
 fi
+
+if [[ -n $(git status -s) ]]
+then
+  echo "found!"
+else
+  echo "not found"
+fi
+exit
 
 exists=`git show-ref refs/heads/wpengine`
 if [ -n "$exists" ]
