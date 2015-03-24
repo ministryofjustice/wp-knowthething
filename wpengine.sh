@@ -27,12 +27,12 @@ then
 fi
 git checkout -b wpengine &> /dev/null
 
-cp -r web/app wp-content
-rm "wp-content/themes/${theme}/.gitignore"
-rm "wp-content/mu-plugins/bedrock-autoloader.php"
-rm "wp-content/mu-plugins/disallow-indexing.php"
-rm "wp-content/mu-plugins/register-theme-directory.php"
-rm .gitignore
+cp -r web/app wp-content &> /dev/null
+rm "wp-content/themes/${theme}/.gitignore" &> /dev/null
+rm "wp-content/mu-plugins/bedrock-autoloader.php" &> /dev/null
+rm "wp-content/mu-plugins/disallow-indexing.php" &> /dev/null
+rm "wp-content/mu-plugins/register-theme-directory.php" &> /dev/null
+rm .gitignore &> /dev/null
 echo "/*\n!wp-content/\nwp-content/uploads" >> .gitignore
 git ls-files | xargs git rm --cached &> /dev/null
 
@@ -53,3 +53,4 @@ then
 fi
 git branch -D wpengine &> /dev/null
 rm -rf wp-content/ &> /dev/null
+echo "Successfully deployed."
