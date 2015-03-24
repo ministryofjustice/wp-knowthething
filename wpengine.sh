@@ -42,7 +42,7 @@ cd ../
 
 git add . &> /dev/null
 git commit -am "WPEngine build from: $(git log -1 HEAD --pretty=format:%s)$(git rev-parse --short HEAD 2> /dev/null | sed "s/\(.*\)/@\1/")" &> /dev/null
-echo "Pushing to WPEngine"
+echo "Pushing to WPEngine..."
 if [ "$environment" == "staging" ]
 then
   git push staging wpengine:master --force &> /dev/null
