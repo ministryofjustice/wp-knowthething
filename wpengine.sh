@@ -41,14 +41,15 @@ find . | grep .git | xargs rm -rf
 cd ../
 
 git add . &> /dev/null
-git commit -am "Setting up WPEngine build." &> /dev/null
+git commit -am "WPEngine build from: $(git log -1 HEAD --pretty=format:%s)$(git rev-parse --short HEAD 2> /dev/null | sed "s/\(.*\)/@\1/")" &> /dev/null
+echo "Pushing to WPEngine"
 if [ "$environment" == "staging" ]
 then
-  git push staging wpengine:master --force
+  git push staging wpengine:master --force &> /dev/null
   git checkout develop &> /dev/null
 elif [ "$environment" == "production" ]
 then
-  git push production wpengine:master --force
+  git push production wpengine:master --force &> /dev/null
   git checkout master &> /dev/null
 fi
 git branch -D wpengine &> /dev/null
