@@ -135,7 +135,7 @@ function hide_login_nav()
 {
     ?><style>#nav,#backtoblog,#loginform{display:none} </style><?php
 }
-//add_action( 'login_head',  __NAMESPACE__ . '\\hide_login_nav' );
+add_action( 'login_head',  __NAMESPACE__ . '\\hide_login_nav' );
 
 /**
  * [image_upload description]
