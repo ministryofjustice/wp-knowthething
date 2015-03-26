@@ -96,7 +96,7 @@ jQuery(document).ready(function($) {
       $.ajax({
           data: data,
           type: "POST",
-          url: "/wp/wp-admin/admin-ajax.php",
+          url: "/wp-admin/admin-ajax.php",
           cache: false,
           contentType: false,
           processData: false,
@@ -123,7 +123,7 @@ jQuery(document).ready(function($) {
     fd.append('action', 'submit_form');
 
     $.ajax({
-      url: "/wp/wp-admin/admin-ajax.php",
+      url: "/wp-admin/admin-ajax.php",
       type: "POST",
       data: fd,
       processData: false,
