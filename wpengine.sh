@@ -6,9 +6,11 @@ echo "Starting the build process..."
 if [ "$environment" == "staging" ]
 then
   git checkout develop &> /dev/null
+  gulp &> /dev/null
 elif [ "$environment" == "production" ]
 then
   git checkout master &> /dev/null
+  gulp --production &> /dev/null
 else
   echo "Invalid environment."
   exit
