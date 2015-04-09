@@ -2,6 +2,15 @@
 use Roots\Sage\Extras;
 if(!empty(get_query_var('post_week')) && !empty(get_query_var('post_year')) || is_front_page()) {
   $query = Extras\get_week_posts(get_query_var('post_week'), get_query_var('post_year'));
+} elseif(!empty(get_query_var('s'))) {
+  $value = Extras\test_input(get_query_var('s'));
+  $args = [
+    'post_type' => 'post',
+    'post_status' => 'publish',
+    'posts_per_page' => -1,
+    's' => $value,
+  ];
+  $query = new \WP_Query($args);
 } else {
   $query = $wp_query;
 }
