@@ -5,35 +5,23 @@
 </section>
 <section class="widget widget_recent_weeks">
   <h3>Recent Weeks</h3>
-  <?php
-    $weeks = array();
-    $posts = get_posts(array(
-      'numberposts' => -1,
-      'orderby' => 'post_date',
-      'order' => 'ASC',
-      'post_type' => 'post',
-      'post_status' => 'publish'
-    ));
-
-    foreach($posts as $post) {
-      $weeks[date('Y/W', strtotime($post->post_date))][] = $post;
-    }
-    krsort($weeks);
-
-  ?>
   <ul class="weeks">
-  <?php foreach($weeks as $week => $posts) : ?>
-    <?php $split = explode('/', $week); ?>
-    <?php $count = 0; ?>
-    <?php foreach($posts as $post) : setup_postdata($post); ?>
-      <?php $count++; ?>
-    <?php endforeach; ?>
+  <?php
+    global $wpdb;
+    $weeks = $wpdb->get_results( "SELECT WEEK(post_date,1) AS week, YEAR(post_date) as year FROM wp_posts WHERE post_type = 'post' AND post_status = 'publish' GROUP BY week DESC" );
+    foreach ( $weeks as $week ) {
+      $posts_this_week = $wpdb->get_results( "SELECT ID FROM wp_posts WHERE post_type = 'post' AND post_status = 'publish' AND WEEK(post_date,1) = '" . $week->week . "'" );
+      $count = 0;
+      foreach ( $posts_this_week as $post ) {
+        $count++;
+      }
+      $week_start = new DateTime();
+      $week_start->setISODate($week->year,$week->week);
+      ?>
+      <li><a href="/<?php echo $week->year . '/' . $week->week; ?>/"><?= $week_start->format('d/m/Y'); ?> <strong><?= $count ?></strong></a></li>
     <?php
-    $week_start = new DateTime();
-    $week_start->setISODate($split[0],$split[1]);
-    ?>
-    <li><a href="/<?= $week ?>/"><?= $week_start->format('d/m/Y'); ?> <strong><?= $count ?></strong></a></li>
-  <?php endforeach; ?>
+    }
+  ?>
   </ul>
 </section>
 <section class="widget widget_bug">
