@@ -4,36 +4,26 @@
   </a>
 </section>
 <section class="widget widget_recent_weeks">
-  <h3>Recent Weeks</h3>
+  <h3>Recent Weekly</h3>
   <?php
-    $weeks = array();
-    $posts = get_posts(array(
-      'numberposts' => -1,
-      'orderby' => 'post_date',
-      'order' => 'ASC',
-      'post_type' => 'post',
-      'post_status' => 'publish'
-    ));
-
-    foreach($posts as $post) {
-      $weeks[date('Y/W', strtotime($post->post_date))][] = $post;
-    }
-    krsort($weeks);
-
+    $past = 10; // Go back 10 weeks
+    $currentWeek = date("W");
+    $old_time = time();
   ?>
-  <ul class="weeks">
-  <?php foreach($weeks as $week => $posts) : ?>
-    <?php $split = explode('/', $week); ?>
-    <?php $count = 0; ?>
-    <?php foreach($posts as $post) : setup_postdata($post); ?>
-      <?php $count++; ?>
-    <?php endforeach; ?>
-    <?php
-    $week_start = new DateTime();
-    $week_start->setISODate($split[0],$split[1]);
-    ?>
-    <li><a href="/<?= $week ?>/"><?= $week_start->format('d/m/Y'); ?> <strong><?= $count ?></strong></a></li>
-  <?php endforeach; ?>
+  <ul>
+  <?php if(date('w', $old_time) == 1): ?>
+    <li>
+      <a href="/<?= date("Y", $old_time); ?>/<?= date("W", $old_time); ?>/"><?= date("d/m/Y", $old_time) ?></a>
+    </li>
+    <?php $past = 9; ?>
+  <?php endif; ?>
+  <?php for($i=0; $i < $past; $i++): ?>
+    <?php $time = strtotime("last Monday", $old_time); ?>
+    <li>
+      <a href="/<?= date("Y", $time); ?>/<?= date("W", $time); ?>/"><?= date("d/m/Y", $time) ?></a>
+    </li>
+    <?php $old_time = $time; ?>
+  <?php endfor; ?>
   </ul>
 </section>
 <section class="widget widget_bug">
