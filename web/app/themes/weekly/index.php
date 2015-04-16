@@ -1,6 +1,6 @@
 <?php
 use Roots\Sage\Extras;
-if(!empty(get_query_var('post_week')) && !empty(get_query_var('post_year')) || is_front_page()) {
+if(!empty(get_query_var('post_week')) && !empty(get_query_var('post_year'))) {
   $query = Extras\get_week_posts(get_query_var('post_week'), get_query_var('post_year'));
 } elseif(!empty(get_query_var('s'))) {
   $value = Extras\test_input(get_query_var('s'));
@@ -23,7 +23,7 @@ if(!empty(get_query_var('post_week')) && !empty(get_query_var('post_year')) || i
 <?php endif; ?>
 
 <?php if ($query->have_posts()) : ?>
-  <?php if(!empty(get_query_var('post_year')) && !empty(get_query_var('post_week')) || is_front_page()): ?>
+  <?php if( !empty(get_query_var('post_year')) && !empty(get_query_var('post_week')) ): ?>
     <?php
       if(!empty(get_query_var('post_year')) && !empty(get_query_var('post_week'))) {
         $timestamp = strtotime(get_query_var('post_year') . "W" . get_query_var('post_week'));
@@ -35,6 +35,8 @@ if(!empty(get_query_var('post_week')) && !empty(get_query_var('post_year')) || i
       $weekBeginning = date('d/m/Y', $timestamp);
     ?>
     <h2 class="week-beginning" id="<?= $timestamp ?>">Week Beginning: <?= $weekBeginning ?></h2>
+  <?php elseif( is_front_page() ): ?>
+    <h2 class="week-beginning">Latest Posts</h2>
   <?php endif; ?>
 
   <?php while ($query->have_posts()) : $query->the_post(); ?>

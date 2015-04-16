@@ -177,7 +177,8 @@ function submit_form() {
 
   $output['content'] = htmlspecialchars_decode($output['content']);
   $output['content'] = strip_tags($output['content'],"<p><span><ul><li><ol><a><br/><br><img>");
-  $pattern = "#(?<=<p>)\bhttps?://[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))(?=(</p>|<br></p>))#";
+  $output['content'] = str_replace('<span style=\"line-height: 1.42857143;\">', '<span>', $output['content']);
+  $pattern = "#(?<=<p>|<p><span>)\bhttps?://[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))(?=(</p>|<br></p>|</span><br></p>|</span></p>))#";
 
   preg_match_all($pattern, $output['content'], $matches);
 
