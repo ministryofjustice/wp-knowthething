@@ -34,9 +34,29 @@ if(!empty(get_query_var('post_week')) && !empty(get_query_var('post_year'))) {
       }
       $weekBeginning = date('d/m/Y', $timestamp);
     ?>
-    <h2 class="week-beginning" id="<?= $timestamp ?>">Week Beginning: <?= $weekBeginning ?></h2>
+    <h2 class="week-beginning" id="<?= $timestamp ?>"><?= $weekBeginning ?></h2>
   <?php elseif( is_front_page() ): ?>
     <h2 class="week-beginning">Latest Posts</h2>
+    <div class="btn-group category-drop">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        Category <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <?php
+        $categories = get_categories();
+        foreach ($categories as $category) {
+          if($category->term_id != 1){
+            $option .= '<li><a href="'.get_option('home').'/category/'.$category->slug.'">';
+            $option .= $category->cat_name;
+            $option .= ' ('.$category->category_count.')';
+            $option .= '</a></li>';
+          }
+        }
+        echo $option;
+        ?>
+      </ul>
+    </div>
+
   <?php endif; ?>
 
   <?php while ($query->have_posts()) : $query->the_post(); ?>

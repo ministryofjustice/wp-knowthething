@@ -82,6 +82,12 @@
 
 jQuery(document).ready(function($) {
 
+  $('.months-link').click(function() {
+    $( "." + $( this ).attr("data-month") ).slideToggle( "slow", function() {
+      // Animation complete.
+    });
+  });
+
   $('#summernote').summernote({
     height: 300,
     toolbar: [
