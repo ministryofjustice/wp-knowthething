@@ -27,7 +27,7 @@
         $count++;
       }
       ?>
-      <li><a href="/<?php echo $week->year . '/' . $week->week; ?>/">Week Beginning <?= $week_start->format('d/m/Y'); ?> <strong><?= $count ?></strong></a></li>
+      <li><a href="/<?php echo $week->year . '/' . $week->week; ?>/"><?= $week_start->format('d/m/Y'); ?> <strong><?= $count ?></strong></a></li>
     <?php
 
     $next_week = new DateTime();
