@@ -32,7 +32,8 @@ then
 fi
 git checkout -b wpengine
 
-cp -r web/app wp-content
+mv web/app wp-content
+rm -R web
 rm "wp-content/themes/${theme}/.gitignore"
 rm "wp-content/mu-plugins/bedrock-autoloader.php"
 rm "wp-content/mu-plugins/disallow-indexing.php"
@@ -47,6 +48,7 @@ cd ../
 
 git add .
 git commit -am "WPEngine build from: $(git log -1 HEAD --pretty=format:%s)$(git rev-parse --short HEAD 2> /dev/null | sed "s/\(.*\)/@\1/")"
+
 echo "Pushing to WPEngine..."
 if [ "$environment" == "staging" ]
 then
