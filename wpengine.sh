@@ -7,12 +7,12 @@ echo "Starting the build process..."
 cd "web/app/themes/${theme}"
 if [ "$environment" == "staging" ]
 then
-  git checkout develop &> /dev/null
-  gulp &> /dev/null
+  git checkout develop
+  gulp
 elif [ "$environment" == "production" ]
 then
-  git checkout master &> /dev/null
-  gulp --production &> /dev/null
+  git checkout master
+  gulp --production
 else
   echo "Invalid environment."
   exit
@@ -28,35 +28,35 @@ fi
 exists=`git show-ref refs/heads/wpengine`
 if [ -n "$exists" ]
 then
-  git branch -D wpengine &> /dev/null
+  git branch -D wpengine
 fi
-git checkout -b wpengine &> /dev/null
+git checkout -b wpengine
 
-cp -r web/app wp-content &> /dev/null
-rm "wp-content/themes/${theme}/.gitignore" &> /dev/null
-rm "wp-content/mu-plugins/bedrock-autoloader.php" &> /dev/null
-rm "wp-content/mu-plugins/disallow-indexing.php" &> /dev/null
-rm "wp-content/mu-plugins/register-theme-directory.php" &> /dev/null
-rm .gitignore &> /dev/null
+cp -r web/app wp-content
+rm "wp-content/themes/${theme}/.gitignore"
+rm "wp-content/mu-plugins/bedrock-autoloader.php"
+rm "wp-content/mu-plugins/disallow-indexing.php"
+rm "wp-content/mu-plugins/register-theme-directory.php"
+rm .gitignore
 echo "/*\n!wp-content/\nwp-content/uploads" >> .gitignore
-git ls-files | xargs git rm --cached &> /dev/null
+git ls-files | xargs git rm --cached
 
 cd wp-content/
 find . | grep .git | xargs rm -rf
 cd ../
 
-git add . &> /dev/null
-git commit -am "WPEngine build from: $(git log -1 HEAD --pretty=format:%s)$(git rev-parse --short HEAD 2> /dev/null | sed "s/\(.*\)/@\1/")" &> /dev/null
+git add .
+git commit -am "WPEngine build from: $(git log -1 HEAD --pretty=format:%s)$(git rev-parse --short HEAD 2> /dev/null | sed "s/\(.*\)/@\1/")"
 echo "Pushing to WPEngine..."
 if [ "$environment" == "staging" ]
 then
-  git push staging wpengine:master --force &> /dev/null
-  git checkout develop &> /dev/null
+  git push staging wpengine:master --force
+  git checkout develop
 elif [ "$environment" == "production" ]
 then
-  git push production wpengine:master --force &> /dev/null
-  git checkout master &> /dev/null
+  git push production wpengine:master --force
+  git checkout master
 fi
-git branch -D wpengine &> /dev/null
-rm -rf wp-content/ &> /dev/null
+git branch -D wpengine
+rm -rf wp-content/
 echo "Successfully deployed."
