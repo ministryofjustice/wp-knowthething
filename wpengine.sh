@@ -1,8 +1,10 @@
-environment=$1
-theme="sage"
+#!/usr/bin/env bash
 
+environment=$1
+theme="weekly"
 
 echo "Starting the build process..."
+cd "web/app/themes/${theme}"
 if [ "$environment" == "staging" ]
 then
   git checkout develop &> /dev/null
@@ -15,6 +17,7 @@ else
   echo "Invalid environment."
   exit
 fi
+cd "../../../.."
 
 if [[ -n $(git status -s) ]]
 then
