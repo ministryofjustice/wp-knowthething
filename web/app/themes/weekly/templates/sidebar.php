@@ -43,7 +43,5 @@
   </ul>
 </section>
 <section class="widget widget_bug">
-  <p><small>Spotted a bug? <a href="mailto:toby.schrapel@digital.justice.gov.uk">Email me</a></small></p>
+  <p><small>Spotted a bug? <a href="https://github.com/ministryofjustice/wp-weekly/issues" target="_blank">Report it</a></small></p>
 </section>
-<?php //dynamic_sidebar('sidebar-primary'); ?>
-
