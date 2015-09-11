@@ -1,5 +1,6 @@
 # Application
 web/app/plugins/*
+web/app/languages/*
 !web/app/plugins/.gitkeep
 web/app/mu-plugins/*
 !web/app/mu-plugins/.gitkeep
@@ -33,3 +34,6 @@ node_modules
 # Vagrant
 bin
 .vagrant
+
+# PhpStorm
+.idea
