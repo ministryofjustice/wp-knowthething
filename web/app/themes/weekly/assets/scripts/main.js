@@ -82,6 +82,8 @@
 
 jQuery(document).ready(function($) {
 
+  var ajaxurl = typeof SageJS !== 'undefined' ? SageJS.ajaxurl : "nothing";
+
   $('.months-link').click(function() {
     $( "." + $( this ).attr("data-month") ).slideToggle( "slow", function() {
       // Animation complete.
@@ -95,23 +97,29 @@ jQuery(document).ready(function($) {
       ['para', ['ul', 'ol', 'paragraph']],
       ['insert', ['picture', 'link', 'video']], // Fix video
     ],
-    onImageUpload: function(files, editor, welEditable) {
-      data = new FormData();
-      data.append("file", files[0]);
-      data.append('action', 'image_upload');
-      $.ajax({
-          data: data,
-          type: "POST",
-          url: "/wp-admin/admin-ajax.php",
-          cache: false,
-          contentType: false,
-          processData: false,
-          success: function(url) {
-            editor.insertImage(welEditable, url);
-          }
-      });
+    onImageUpload: function(files) {
+      for (i = 0; i < files.length; i++) {
+        uploadImage(files[i], this);
+      }
     }
   });
+
+  var uploadImage = function(file, editor) {
+    data = new FormData();
+    data.append("file", file);
+    data.append('action', 'image_upload');
+    $.ajax({
+      data: data,
+      type: "POST",
+      url: ajaxurl,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function(url) {
+        $(editor).summernote('editor.insertImage', url);
+      }
+    });
+  };
 
   $('.modal-submit').click(function() {
     if($('.add-modal .entry-form:visible').hasClass('standard')) {
@@ -129,7 +137,7 @@ jQuery(document).ready(function($) {
     fd.append('action', 'submit_form');
 
     $.ajax({
-      url: "/wp-admin/admin-ajax.php",
+      url: ajaxurl,
       type: "POST",
       data: fd,
       processData: false,
