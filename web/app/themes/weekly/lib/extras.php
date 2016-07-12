@@ -128,14 +128,19 @@ add_filter( 'show_password_fields', __NAMESPACE__ . '\\disable' );
 add_filter( 'allow_password_reset', __NAMESPACE__ . '\\disable' );
 
 /**
- * [hide_login_nav description]
- * @return [type] [description]
+ * Hide "Back to Know The Thing"
+ * @return void
  */
-function hide_login_nav()
-{
-    ?><style>#nav,#backtoblog,#loginform{display:none} </style><?php
+function hide_backtoblog() {
+  ?>
+  <style>
+    #backtoblog {
+      display: none;
+    }
+  </style>
+  <?php
 }
-add_action( 'login_head',  __NAMESPACE__ . '\\hide_login_nav' );
+add_action('login_head',  __NAMESPACE__ . '\\hide_backtoblog');
 
 /**
  * [image_upload description]
