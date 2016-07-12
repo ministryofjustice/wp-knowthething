@@ -36,14 +36,14 @@
   "repositories": [
     {
       "type": "composer",
-      "url": "http://wpackagist.org"
+      "url": "https://wpackagist.org"
     }
   ],
   "require": {
     "php": ">=5.4",
     "composer/installers": "~1.0.12",
     "vlucas/phpdotenv": "~1.0.9",
-    "johnpbloch/wordpress": "4.1.1",
+    "johnpbloch/wordpress": "4.5.3",
     "roots/soil": "3.0.3",
     "opauth/opauth": "0.4.*"
   },
