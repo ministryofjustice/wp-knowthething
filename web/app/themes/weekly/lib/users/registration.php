@@ -51,6 +51,14 @@ function registration_errors(WP_Error $errors, $sanitized_user_login, $user_emai
     unset($errors->errors['username_exists']);
   }
 
+  // Make the 'email exists' error message more helpful.
+  if (isset($errors->errors['email_exists'])) {
+    $message = '<strong>ERROR</strong>: An account with this email address already exists.<br/><br/>';
+    $message .= 'Have you <a href="' . esc_url(wp_lostpassword_url()) .'">forgotten your password?</a>';
+
+    $errors->errors['email_exists'][0] = __($message);
+  }
+
   return $errors;
 }
 add_filter('registration_errors', __NAMESPACE__ . '\\registration_errors', 10, 3);
