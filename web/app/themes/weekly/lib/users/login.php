@@ -12,15 +12,27 @@ function login_head() {
     #registerform #user_login {
       display: none;
     }
+
+    /* Login header logo */
+    #login h1 a, .login h1 a {
+      text-indent: 0;
+      background-image: none;
+      width: auto;
+      height: auto;
+      color: #000;
+      font-weight: bold;
+    }
   </style>
 
   <script>
     jQuery(document).ready(function($) {
+      // Set 'email' text input type to 'email'
       var user_login = $('#user_login');
       if (user_login.length > 0 && user_login.attr('type') == 'text') {
         user_login.attr('type', 'email');
       }
 
+      // Remove 'username' field from registration form
       var register_form = $('#registerform');
       if (register_form.length > 0) {
         $('#user_login').parents('p').remove();
@@ -69,3 +81,18 @@ function login_form_gettext($translated_text, $text, $domain) {
 
   return $translated_text;
 }
+
+/**
+ * Change the header link.
+ *
+ * @return string|void
+ */
+function login_header_link() {
+  return home_url();
+}
+add_filter('login_headerurl', __NAMESPACE__ . '\\login_header_link');
+
+function login_header_link_title() {
+  return '';
+}
+add_filter( 'login_headertitle', __NAMESPACE__ . '\\login_header_link_title' );
