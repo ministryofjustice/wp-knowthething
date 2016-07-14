@@ -17,7 +17,7 @@ namespace Roots\Sage\Users\OAuth;
  */
 function alter_provider_scope($provider_scope, $provider) {
   if (strtolower($provider) == 'google') {
-    $provider_scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
+    $provider_scope = 'profile email';
   }
 
   return $provider_scope;
