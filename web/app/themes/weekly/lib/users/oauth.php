@@ -32,7 +32,10 @@ add_filter('wsl_hook_alter_provider_scope', __NAMESPACE__ . '\\alter_provider_sc
  * @return array
  */
 function alter_provider_config($config, $provider) {
-  $config['access_type'] = 'online';
+  if (strtolower($provider) == 'google') {
+    $config['access_type'] = 'online';
+  }
+
   return $config;
 }
 add_filter('wsl_hook_alter_provider_config', __NAMESPACE__ . '\\alter_provider_config', 10, 2);
