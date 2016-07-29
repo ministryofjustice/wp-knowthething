@@ -86,7 +86,7 @@ add_action('user_register', __NAMESPACE__ . '\\user_register');
 
 function set_username_to_email() {
   if (isset($_POST['user_login_is_email']) && isset($_POST['user_email']) && !empty($_POST['user_email'])) {
-    $_POST['user_login'] = $_POST['user_email'];
+    $_POST['user_login'] = sanitize_user($_POST['user_email'], true);
     unset($_POST['user_login_is_email']);
   }
 }
