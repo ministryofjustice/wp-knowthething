@@ -5,6 +5,18 @@ namespace Roots\Sage\Users\Registration;
 use WP_Error;
 
 /**
+ * Return an array of valid domain names for user registration.
+ *
+ * @return array
+ */
+function valid_email_domains() {
+  return array(
+    'justice.gsi.gov.uk',
+    'digital.justice.gov.uk',
+  );
+}
+
+/**
  * Add fields to registration form
  */
 function register_form() {
@@ -32,6 +44,11 @@ add_action('register_form', __NAMESPACE__ . '\\register_form');
  * @return WP_Error Updated WP_Error object
  */
 function registration_errors(WP_Error $errors, $sanitized_user_login, $user_email) {
+  // Ensure email address belongs to a valid domain
+  if (!email_domain_is_valid($_POST['user_email'])) {
+    $errors->add('email_domain_error', __('<strong>ERROR</strong>: You must register with a MOJ email address.', 'mydomain'));
+  }
+
   // First Name cannot be empty
   if (empty($_POST['first_name']) || !empty($_POST['first_name']) && trim($_POST['first_name']) == '') {
     $errors->add('first_name_error', __('<strong>ERROR</strong>: Please enter your first name.', 'mydomain'));
@@ -62,6 +79,26 @@ function registration_errors(WP_Error $errors, $sanitized_user_login, $user_emai
   return $errors;
 }
 add_filter('registration_errors', __NAMESPACE__ . '\\registration_errors', 10, 3);
+
+/**
+ * Test if the supplied email address belongs to a valid domain.
+ * To change the list of valid domains, see valid_email_domains()
+ *
+ * @param string $email
+ * @return bool
+ */
+function email_domain_is_valid($email) {
+  $valid_domains = valid_email_domains();
+
+  foreach ($valid_domains as $domain) {
+    $regex = '/\@' . str_replace('.', '\.', $domain) . '$/i';
+    if (preg_match($regex, $email)) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 /**
  * Save fields to new user
