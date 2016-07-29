@@ -91,3 +91,71 @@ function set_username_to_email() {
   }
 }
 add_action('login_form_register', __NAMESPACE__ . '\\set_username_to_email');
+
+/**
+ * Custom scripts and styles for login pages
+ */
+function login_head() {
+  ?>
+  <script>
+    jQuery(document).ready(function($) {
+      var register_form = $('#registerform');
+
+      // Form inputs
+      var email_in = $('#user_email'),
+          first_name_in = $('#first_name'),
+          last_name_in = $('#last_name');
+
+      /**
+       * Helper method to capitalize the first character of a string.
+       *
+       * @param string string
+       * @returns string
+       */
+      var capitalize = function(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      };
+
+      /**
+       * Extract first and last name from an email address.
+       *
+       * @param email string
+       * @returns object
+       */
+      var names_from_email = function(email) {
+        var matches = email.match(/^([a-z]+)\.([a-z]+)\d*\@/i);
+        if (!matches || matches.length !== 3) {
+          return false;
+        }
+        else {
+          return {
+            first: capitalize(matches[1]),
+            last: capitalize(matches[2])
+          };
+        }
+      };
+
+      /**
+       * Attempt to auto-populate the first and last name fields
+       * using the email address.
+       */
+      var autofill = function() {
+        if (first_name_in.val() !== '' || last_name_in.val() !== '') {
+          return;
+        }
+
+        var names = names_from_email(email_in.val());
+        if (names) {
+          first_name_in.val(names.first);
+          last_name_in.val(names.last);
+        }
+      };
+
+      if (register_form.length > 0) {
+        email_in.on('blur', autofill);
+      }
+    });
+  </script>
+  <?php
+}
+add_action('login_head', __NAMESPACE__ . '\\login_head');
