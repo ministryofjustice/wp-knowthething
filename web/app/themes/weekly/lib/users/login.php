@@ -30,12 +30,16 @@ function login_head() {
       var user_login = $('#user_login');
       if (user_login.length > 0 && user_login.attr('type') == 'text') {
         user_login.attr('type', 'email');
+        user_login.parents('form').attr('novalidate', true);
       }
 
       // Remove 'username' field from registration form
       var register_form = $('#registerform');
       if (register_form.length > 0) {
+        // Hide 'Username' field
         $('#user_login').parents('p').remove();
+
+        // Pass a hidden parameter for detection in the registration routine
         register_form.prepend('<input type="hidden" value="1" name="user_login_is_email" />');
       }
     });

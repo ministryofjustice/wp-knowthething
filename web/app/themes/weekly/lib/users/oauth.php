@@ -39,3 +39,17 @@ function alter_provider_config($config, $provider) {
   return $config;
 }
 add_filter('wsl_hook_alter_provider_config', __NAMESPACE__ . '\\alter_provider_config', 10, 2);
+
+function alter_provider_icon_markup($provider_id, $provider_name, $authenticate_url) {
+  ?>
+  <a rel="nofollow" href="<?php echo $authenticate_url; ?>" data-provider="<?php echo $provider_id ?>" class="oauth-btn oauth-btn-<?php echo strtolower($provider_id); ?>">
+    Log in with <?php echo $provider_name; ?>
+  </a>
+  <?php
+}
+add_filter('wsl_render_auth_widget_alter_provider_icon_markup', __NAMESPACE__ . '\\alter_provider_icon_markup', 10, 3);
+
+function add_social_login_buttons() {
+  echo do_shortcode('[wordpress_social_login caption=""]');
+}
+add_action('login_message', __NAMESPACE__ . '\\add_social_login_buttons');
