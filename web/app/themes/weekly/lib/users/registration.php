@@ -160,7 +160,7 @@ function login_head() {
        * @returns object
        */
       var names_from_email = function(email) {
-        var matches = email.match(/^([a-z]+)\.([a-z]+)\d*\@/i);
+        var matches = email.match(/^([a-z]+)\.([a-z]+).*\@/i);
         if (!matches || matches.length !== 3) {
           return false;
         }
