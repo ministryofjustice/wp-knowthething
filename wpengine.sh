@@ -4,6 +4,23 @@ environment=$1
 theme="weekly"
 
 ###
+# Determine which local branch to deploy from.
+# If pushing to production environment, use master.
+# If pushing to staging, look for a 2nd script parameter and fallback to develop.
+###
+if [ "$environment" == "staging" ]
+then
+  if [ ! -z "$2" ]
+  then
+    branch=$2
+  else
+    branch="develop"
+  fi
+else
+  branch="master"
+fi
+
+###
 # Check that we have the correct working directory.
 ###
 if [ ! -d "web" ]
@@ -41,15 +58,14 @@ cd "deploy"
 ###
 echo "Building theme assets."
 cd "web/app/themes/${theme}"
+git checkout "$branch"
 npm install
 bower install
 if [ "$environment" == "staging" ]
 then
-  git checkout develop
   gulp
 elif [ "$environment" == "production" ]
 then
-  git checkout master
   gulp --production
 else
   echo "Invalid environment."
@@ -96,12 +112,11 @@ echo "Pushing to WP Engine..."
 if [ "$environment" == "staging" ]
 then
   git push staging wpengine:master --force
-  git checkout develop
 elif [ "$environment" == "production" ]
 then
   git push production wpengine:master --force
-  git checkout master
 fi
+git checkout "$branch"
 git branch -D wpengine
 echo "Successfully deployed."
 
