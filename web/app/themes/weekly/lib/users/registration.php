@@ -13,6 +13,7 @@ function valid_email_domains() {
   return array(
     'justice.gsi.gov.uk',
     'digital.justice.gov.uk',
+    'official.justice.gov.uk',
   );
 }
 
