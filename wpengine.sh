@@ -95,7 +95,9 @@ rm "wp-content/mu-plugins/disallow-indexing.php"
 rm "wp-content/mu-plugins/register-theme-directory.php"
 rm .gitignore
 rm "vendor/composer/autoload_static.php" # Presence of this file breaks wpengine syntax checks, so we must remove it. See https://github.com/composer/composer/issues/5316
-echo "/*\n!wp-content/\nwp-content/uploads" >> .gitignore
+echo '/*' >> .gitignore
+echo '!wp-content/' >> .gitignore
+echo 'wp-content/uploads' >> .gitignore
 git ls-files | xargs git rm --cached
 
 cd wp-content/
