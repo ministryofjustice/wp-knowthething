@@ -81,6 +81,10 @@ function login_form_gettext($translated_text, $text, $domain) {
     case '<strong>ERROR</strong>: Enter a username or email address.':
       $translated_text = '<strong>ERROR</strong>: Enter an email address.';
       break;
+
+    case 'Register For This Site':
+      $translated_text = 'Register For This Site<br/><br/>If you have a MOJ Digital Google account, simply log in with Google. No need to register.';
+      break;
   }
 
   return $translated_text;

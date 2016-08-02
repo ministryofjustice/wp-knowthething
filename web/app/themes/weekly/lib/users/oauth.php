@@ -49,7 +49,15 @@ function alter_provider_icon_markup($provider_id, $provider_name, $authenticate_
 }
 add_filter('wsl_render_auth_widget_alter_provider_icon_markup', __NAMESPACE__ . '\\alter_provider_icon_markup', 10, 3);
 
-function add_social_login_buttons() {
-  echo do_shortcode('[wordpress_social_login caption=""]');
+function add_social_login_buttons($message) {
+  global $action;
+
+  if ($action == 'login' || $action == 'register') {
+    $social_login = do_shortcode('[wordpress_social_login caption=""]');
+    return $message . $social_login;
+  }
+  else {
+    return $message;
+  }
 }
-add_action('login_message', __NAMESPACE__ . '\\add_social_login_buttons');
+add_filter('login_message', __NAMESPACE__ . '\\add_social_login_buttons');

@@ -112,22 +112,6 @@ function force_login() {
 add_action( 'parse_request', __NAMESPACE__ . '\\force_login', 1 );
 
 /**
- * [disable description]
- * @return [type] [description]
- */
-function disable() {
-  if ( is_admin() ) {
-    $userdata = wp_get_current_user();
-    $user = new \WP_User($userdata->ID);
-    if ( !empty( $user->roles ) && is_array( $user->roles ) && $user->roles[0] == 'administrator' )
-      return true;
-  }
-  return false;
-}
-add_filter( 'show_password_fields', __NAMESPACE__ . '\\disable' );
-add_filter( 'allow_password_reset', __NAMESPACE__ . '\\disable' );
-
-/**
  * Hide "Back to Know The Thing"
  * @return void
  */
