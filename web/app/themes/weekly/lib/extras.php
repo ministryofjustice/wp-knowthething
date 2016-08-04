@@ -141,6 +141,20 @@ function fsp_caps_check($caps) {
 add_filter('slt_fsp_caps_check', __NAMESPACE__ . '\\fsp_caps_check');
 
 /**
+ * Redirect users to the frontend after login, unless a redirect URL
+ * was specified.
+ */
+function login_redirect($redirect_to, $requested_redirect_to, $user) {
+  if (get_class($user) == 'WP_User') {
+    if (strpos($requested_redirect_to, '/wp-admin/') !== false) {
+      $redirect_to = get_home_url();
+    }
+  }
+  return $redirect_to;
+}
+add_filter('login_redirect', __NAMESPACE__ . '\\login_redirect', 10, 3);
+
+/**
  * [image_upload description]
  * @return [type] [description]
  */
