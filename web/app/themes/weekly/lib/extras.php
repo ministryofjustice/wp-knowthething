@@ -127,6 +127,20 @@ function hide_backtoblog() {
 add_action('login_head',  __NAMESPACE__ . '\\hide_backtoblog');
 
 /**
+ * Configure 'Force Strong Passwords' plugin to enforce
+ * strong passwords for users with the returned capabilities.
+ *
+ * @param array $caps
+ * @return array
+ */
+function fsp_caps_check($caps) {
+  return array(
+    'update_core',
+  );
+}
+add_filter('slt_fsp_caps_check', __NAMESPACE__ . '\\fsp_caps_check');
+
+/**
  * [image_upload description]
  * @return [type] [description]
  */
