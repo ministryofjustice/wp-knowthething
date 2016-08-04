@@ -43,5 +43,5 @@
   </ul>
 </section>
 <section class="widget widget_bug">
-  <p><small>Spotted a bug? <a href="https://github.com/ministryofjustice/wp-weekly/issues" target="_blank">Report it</a></small></p>
+  <small>Spotted a bug? <a href="https://github.com/ministryofjustice/wp-weekly/issues" target="_blank">Report it here.</a></small>
 </section>
