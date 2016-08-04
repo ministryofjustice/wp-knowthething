@@ -112,6 +112,21 @@ function force_login() {
 add_action( 'parse_request', __NAMESPACE__ . '\\force_login', 1 );
 
 /**
+ * Filter media library items to those belonging to the current user,
+ * if the user cannot edit others' posts.
+ *
+ * @param $wp_query
+ * @return mixed
+ */
+function limit_media_library_to_own_items($wp_query) {
+  if (is_admin() && $wp_query->get('post_type') == 'attachment' && !current_user_can('edit_others_posts')) {
+      $wp_query->set('author', get_current_user_id());
+  }
+  return $wp_query;
+}
+add_filter('parse_query', __NAMESPACE__ . '\\limit_media_library_to_own_items');
+
+/**
  * [disable description]
  * @return [type] [description]
  */
