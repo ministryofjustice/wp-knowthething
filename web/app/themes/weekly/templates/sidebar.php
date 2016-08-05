@@ -1,46 +1,47 @@
+<?php
+
+use Roots\Sage\Extras;
+
+?>
+
 <section class="widget widget_add">
   <a href="#" class="btn btn-primary btn-block add-btn" data-toggle="modal" data-target=".add-modal">
     Add <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
   </a>
 </section>
 <section class="widget widget_recent_weeks">
-  <h3>Recent Weeks</h3>
+  <h3>Monthly Archives</h3>
   <?php
-    global $wpdb;
-    $months = [];
-    $current_month = "";
-    $weeks = $wpdb->get_results( "SELECT WEEK(post_date,1) AS week, YEAR(post_date) as year FROM wp_posts WHERE post_type = 'post' AND post_status = 'publish' GROUP BY week DESC" );
-    foreach ( $weeks as $index => $week ) {
-      $week_start = new DateTime();
-      $week_start->setISODate($week->year,$week->week);
-      $month = $week_start->format('m');
-    ?>
-    <?php if(!in_array($month, $months)): $months[] = $month; ?>
-      <a href="#" class="months-link" data-month="week-<?= $month; ?>"><?= $week_start->format('F'); ?></a>
-      <ul class="weeks week-<?= $month; ?><?php if(date("m") == $month): ?> active<?php endif; ?>">
-    <?php endif; ?>
-
-    <?php
-      $posts_this_week = $wpdb->get_results( "SELECT ID FROM wp_posts WHERE post_type = 'post' AND post_status = 'publish' AND WEEK(post_date,1) = '" . $week->week . "'" );
-      $count = 0;
-      foreach ( $posts_this_week as $post ) {
-        $count++;
-      }
-      ?>
-      <li><a href="/<?php echo $week->year . '/' . $week->week; ?>/"><?= $week_start->format('d/m/Y'); ?> <strong><?= $count ?></strong></a></li>
-    <?php
-
-    $next_week = new DateTime();
-    $next_week->setISODate($weeks[$index+1]->year,$weeks[$index+1]->week);
-    $next_month = $next_week->format('m');
-    if($next_month != $month) {
-      echo "</ul>";
-    }
-
-    }
+  $years = Extras\get_post_archive_months();
+  $first = true;
   ?>
-
-  </ul>
+  <div class="panel-group" id="archive" role="tablist" aria-multiselectable="true">
+    <?php foreach ($years as $year => $months): ?>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading<?php echo $year; ?>">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#archive" href="#archive<?php echo $year; ?>" aria-expanded="<?php echo $first ? 'true' : 'false'; ?>" aria-controls="archive<?php echo $year; ?>">
+              <?php echo $year; ?>
+            </a>
+          </h4>
+        </div>
+        <div id="archive<?php echo $year; ?>" class="panel-collapse collapse<?php echo $first ? ' in' : ''; ?>" role="tabpanel" aria-labelledby="heading<?php echo $year; ?>">
+          <div class="btn-group-vertical" style="width:100%;">
+            <?php foreach ($months as $month): ?>
+              <?php
+              $date = new DateTime($month->year . '-' . zeroise($month->month, 2) . '-01');
+              ?>
+              <a href="<?php echo get_month_link($month->year, $month->month); ?>" class="btn btn-block btn-align-left">
+                <?php echo $date->format('F'); ?>
+                <span class="badge pull-right"><?php echo $month->post_count; ?></span>
+              </a>
+            <?php endforeach; ?>
+          </div>
+        </div>
+      </div>
+      <?php if ($first) $first = false; ?>
+    <?php endforeach; ?>
+  </div>
 </section>
 <section class="widget widget_bug">
   <small>Spotted a bug? <a href="https://github.com/ministryofjustice/wp-weekly/issues" target="_blank">Report it here.</a></small>

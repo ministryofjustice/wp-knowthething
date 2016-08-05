@@ -35,70 +35,6 @@ function excerpt_more() {
 add_filter('excerpt_more', __NAMESPACE__ . '\\excerpt_more');
 
 /**
- * [add_query_vars_filter description]
- * @param [type] $vars [description]
- */
-function add_query_vars_filter($vars){
-  $vars[] = "post_year";
-  $vars[] = "post_week";
-  return $vars;
-}
-add_filter('query_vars', __NAMESPACE__ . '\\add_query_vars_filter');
-
-/**
- * [custom_rewrite_basic description]
- * @return [type] [description]
- */
-function custom_rewrite_basic() {
-  add_rewrite_rule('^([0-9]+)/([0-9]+)/?', 'index.php?post_year=$matches[1]&post_week=$matches[2]', 'top');
-}
-add_action('init', __NAMESPACE__ . '\\custom_rewrite_basic');
-
-/**
- * [get_week_posts description]
- * @param  [type] $week [description]
- * @param  [type] $year [description]
- * @return [type]       [description]
- */
-function get_week_posts( $week = null, $year = null ) {
-  if(empty($week) || empty($year)) {
-    $week = date("W");
-    $year = date("Y");
-  }
-  $dateFrom = $year . "W" . $week;
-  $dateTo = $year . "W" . ($week+1);
-
-  $args = [
-    'post_type' => 'post',
-    'post_status' => 'publish',
-    'orderby' => 'date',
-    'order' => 'DESC',
-    'posts_per_page' => -1,
-    'date_query' => [
-      [
-        'after' => $dateFrom,
-        'before' => $dateTo,
-      ]
-    ]
-  ];
-  $query = new \WP_Query($args);
-  return $query;
-}
-
-/**
- * [test_input description]
- * @param  [type] $data [description]
- * @return [type]       [description]
- */
-function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  $data = esc_sql($data);
-  return $data;
-}
-
-/**
  * [force_login description]
  * @return [type] [description]
  */
@@ -313,3 +249,54 @@ function no_mo_dashboard() {
   }
 }
 //add_action('admin_init', __NAMESPACE__ . '\\no_mo_dashboard');
+
+function get_post_archive_months() {
+  global $wpdb;
+
+  $query = "SELECT MONTH(post_date) AS month,
+                   YEAR(post_date) AS year,
+                   COUNT(*) AS post_count
+            FROM {$wpdb->posts}
+            WHERE post_type = 'post'
+            AND post_status = 'publish'
+            GROUP BY MONTH(post_date), YEAR(post_date)
+            ORDER BY post_date DESC";
+  $months = $wpdb->get_results($query);
+
+  $years = array();
+  foreach ($months as $month) {
+    if (!isset($years[$month->year])) {
+      $years[$month->year] = array();
+    }
+
+    $years[$month->year][] = $month;
+  }
+
+  return $years;
+}
+
+/**
+ * Show all posts at once for archive and search results pages.
+ * Sets posts_per_page to -1.
+ *
+ * @param $query
+ */
+function show_all_posts($query) {
+  if ($query->is_main_query() && !is_admin() && ($query->is_archive() || $query->is_search()) ) {
+    $query->set('posts_per_page', '-1');
+  }
+}
+add_action('pre_get_posts', __NAMESPACE__ . '\\show_all_posts');
+
+function nicer_archive_title($title) {
+  if (is_month()) {
+    $title = get_the_date(_x('F Y', 'monthly archives date format'));
+  }
+
+  if (is_year()) {
+    $title = get_the_date(_x('Y', 'yearly archives date format'));
+  }
+
+  return $title;
+}
+add_filter('get_the_archive_title', __NAMESPACE__ . '\\nicer_archive_title');

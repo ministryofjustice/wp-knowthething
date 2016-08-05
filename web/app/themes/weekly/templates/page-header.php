@@ -1,5 +1,8 @@
 <?php use Roots\Sage\Titles; ?>
 
-<header class="page-header">
-  <h1 class="entry-title"><?= Titles\title(); ?></h1>
-</header>
+<h1 class="page-header">
+  <?= Titles\title(); ?>
+  <?php if (is_archive() || is_search()): ?>
+    <small><?php echo sprintf(_n('%d post', '%d posts', $wp_query->post_count), $wp_query->post_count); ?></small>
+  <?php endif; ?>
+</h1>
