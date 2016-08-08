@@ -2,6 +2,34 @@
 
 use Roots\Sage\Extras;
 
+$archive_years = Extras\get_post_archive_months();
+
+/**
+ * Determine the currently active year, if on an archive page.
+ */
+if (is_archive()) {
+  $active_month = get_query_var('monthnum');
+  $active_year = get_query_var('year');
+}
+else {
+  $active_month = false;
+  $active_year = false;
+}
+
+/**
+ * Determine which year to expand by default.
+ */
+if (isset($archive_years[$active_year])) {
+  $expand_year = $active_year;
+}
+else if (count($archive_years) > 0) {
+  $keys = array_keys($archive_years);
+  $expand_year = array_shift($keys);
+}
+else {
+  $expand_year = false;
+}
+
 ?>
 
 <section class="widget widget_add">
@@ -11,27 +39,25 @@ use Roots\Sage\Extras;
 </section>
 <section class="widget widget_recent_weeks">
   <h3>Monthly Archives</h3>
-  <?php
-  $years = Extras\get_post_archive_months();
-  $first = true;
-  ?>
   <div class="panel-group" id="archive" role="tablist" aria-multiselectable="true">
-    <?php foreach ($years as $year => $months): ?>
+    <?php foreach ($archive_years as $year => $months): ?>
+      <?php $expand = ($year == $expand_year); ?>
       <div class="panel panel-dark">
         <div class="panel-heading" role="tab" id="heading<?php echo $year; ?>">
           <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#archive" href="#archive<?php echo $year; ?>" aria-expanded="<?php echo $first ? 'true' : 'false'; ?>" aria-controls="archive<?php echo $year; ?>" class="<?php echo $first ? '' : 'collapsed'; ?>">
+            <a data-toggle="collapse" data-parent="#archive" href="#archive<?php echo $year; ?>" aria-expanded="<?php echo $expand ? 'true' : 'false'; ?>" aria-controls="archive<?php echo $year; ?>" class="<?php echo $expand ? '' : 'collapsed'; ?>">
               <?php echo $year; ?>
             </a>
           </h4>
         </div>
-        <div id="archive<?php echo $year; ?>" class="panel-collapse collapse<?php echo $first ? ' in' : ''; ?>" role="tabpanel" aria-labelledby="heading<?php echo $year; ?>">
+        <div id="archive<?php echo $year; ?>" class="panel-collapse collapse<?php echo $expand ? ' in' : ''; ?>" role="tabpanel" aria-labelledby="heading<?php echo $year; ?>">
           <div class="btn-group-vertical" style="width:100%;">
             <?php foreach ($months as $month): ?>
               <?php
               $date = new DateTime($month->year . '-' . zeroise($month->month, 2) . '-01');
+              $active = ($active_month == $month->month && $active_year == $month->year);
               ?>
-              <a href="<?php echo get_month_link($month->year, $month->month); ?>" class="btn btn-dark btn-block btn-align-left">
+              <a href="<?php echo get_month_link($month->year, $month->month); ?>" class="btn btn-dark btn-block btn-align-left<?php echo $active ? ' active' : ''; ?>">
                 <?php echo $date->format('F'); ?>
                 <span class="badge pull-right"><?php echo $month->post_count; ?></span>
               </a>
@@ -39,7 +65,6 @@ use Roots\Sage\Extras;
           </div>
         </div>
       </div>
-      <?php if ($first) $first = false; ?>
     <?php endforeach; ?>
   </div>
 </section>
