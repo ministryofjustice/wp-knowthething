@@ -1,0 +1,44 @@
+/**
+ * An extension of bootstrap/panels
+ */
+
+.panel-title > a {
+  display: block;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.panel-heading a[data-toggle] {
+  position: relative;
+  padding-left: 0.6em;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border: solid transparent;
+    height: 0;
+    width: 0;
+    pointer-events: none;
+    border-left-color: @panel-dark-text;
+    border-width: 4px;
+    margin-left: -4px;
+    margin-top: -5px;
+    transform-origin: left center;
+    transform: rotate(90deg) translateX(-2px) translateY(-2px);
+    transition: transform 0.2s linear;
+  }
+
+  &.collapsed:after {
+    transform: rotate(0deg);
+  }
+}
+
+// Alternate panels
+// --------------------------------------------------
+
+.panel-dark {
+  .panel-variant(@panel-dark-border; @panel-dark-text; @panel-dark-heading-bg; @panel-dark-border);
+  background-color: @panel-dark-bg;
+}

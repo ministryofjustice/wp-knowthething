@@ -17,10 +17,10 @@ use Roots\Sage\Extras;
   ?>
   <div class="panel-group" id="archive" role="tablist" aria-multiselectable="true">
     <?php foreach ($years as $year => $months): ?>
-      <div class="panel panel-default">
+      <div class="panel panel-dark">
         <div class="panel-heading" role="tab" id="heading<?php echo $year; ?>">
           <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#archive" href="#archive<?php echo $year; ?>" aria-expanded="<?php echo $first ? 'true' : 'false'; ?>" aria-controls="archive<?php echo $year; ?>">
+            <a data-toggle="collapse" data-parent="#archive" href="#archive<?php echo $year; ?>" aria-expanded="<?php echo $first ? 'true' : 'false'; ?>" aria-controls="archive<?php echo $year; ?>" class="<?php echo $first ? '' : 'collapsed'; ?>">
               <?php echo $year; ?>
             </a>
           </h4>
@@ -31,7 +31,7 @@ use Roots\Sage\Extras;
               <?php
               $date = new DateTime($month->year . '-' . zeroise($month->month, 2) . '-01');
               ?>
-              <a href="<?php echo get_month_link($month->year, $month->month); ?>" class="btn btn-block btn-align-left">
+              <a href="<?php echo get_month_link($month->year, $month->month); ?>" class="btn btn-dark btn-block btn-align-left">
                 <?php echo $date->format('F'); ?>
                 <span class="badge pull-right"><?php echo $month->post_count; ?></span>
               </a>
