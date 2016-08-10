@@ -112,30 +112,47 @@ function force_login() {
 add_action( 'parse_request', __NAMESPACE__ . '\\force_login', 1 );
 
 /**
- * [disable description]
- * @return [type] [description]
+ * Hide "Back to Know The Thing"
+ * @return void
  */
-function disable() {
-  if ( is_admin() ) {
-    $userdata = wp_get_current_user();
-    $user = new \WP_User($userdata->ID);
-    if ( !empty( $user->roles ) && is_array( $user->roles ) && $user->roles[0] == 'administrator' )
-      return true;
-  }
-  return false;
+function hide_backtoblog() {
+  ?>
+  <style>
+    #backtoblog {
+      display: none;
+    }
+  </style>
+  <?php
 }
-add_filter( 'show_password_fields', __NAMESPACE__ . '\\disable' );
-add_filter( 'allow_password_reset', __NAMESPACE__ . '\\disable' );
+add_action('login_head',  __NAMESPACE__ . '\\hide_backtoblog');
 
 /**
- * [hide_login_nav description]
- * @return [type] [description]
+ * Configure 'Force Strong Passwords' plugin to enforce
+ * strong passwords for users with the returned capabilities.
+ *
+ * @param array $caps
+ * @return array
  */
-function hide_login_nav()
-{
-    ?><style>#nav,#backtoblog,#loginform{display:none} </style><?php
+function fsp_caps_check($caps) {
+  return array(
+    'update_core',
+  );
 }
-add_action( 'login_head',  __NAMESPACE__ . '\\hide_login_nav' );
+add_filter('slt_fsp_caps_check', __NAMESPACE__ . '\\fsp_caps_check');
+
+/**
+ * Redirect users to the frontend after login, unless a redirect URL
+ * was specified.
+ */
+function login_redirect($redirect_to, $requested_redirect_to, $user) {
+  if (get_class($user) == 'WP_User') {
+    if (strpos($requested_redirect_to, '/wp-admin/') !== false) {
+      $redirect_to = get_home_url();
+    }
+  }
+  return $redirect_to;
+}
+add_filter('login_redirect', __NAMESPACE__ . '\\login_redirect', 10, 3);
 
 /**
  * [image_upload description]

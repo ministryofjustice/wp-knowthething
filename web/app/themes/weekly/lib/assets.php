@@ -127,6 +127,11 @@ function assets() {
 }
 add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\assets', 100);
 
+function login_assets() {
+  wp_enqueue_style('sage_login_css', asset_path('styles/wp-login.css'), false, null);
+}
+add_action('login_enqueue_scripts', __NAMESPACE__ . '\\login_assets');
+
 // http://wordpress.stackexchange.com/a/12450
 function jquery_local_fallback($src, $handle = null) {
   static $add_jquery_fallback = false;
