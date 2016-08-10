@@ -84,12 +84,6 @@ jQuery(document).ready(function($) {
 
   var ajaxurl = typeof SageJS !== 'undefined' ? SageJS.ajaxurl : "nothing";
 
-  $('.months-link').click(function() {
-    $( "." + $( this ).attr("data-month") ).slideToggle( "slow", function() {
-      // Animation complete.
-    });
-  });
-
   $('#summernote').summernote({
     height: 300,
     toolbar: [
