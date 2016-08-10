@@ -35,70 +35,6 @@ function excerpt_more() {
 add_filter('excerpt_more', __NAMESPACE__ . '\\excerpt_more');
 
 /**
- * [add_query_vars_filter description]
- * @param [type] $vars [description]
- */
-function add_query_vars_filter($vars){
-  $vars[] = "post_year";
-  $vars[] = "post_week";
-  return $vars;
-}
-add_filter('query_vars', __NAMESPACE__ . '\\add_query_vars_filter');
-
-/**
- * [custom_rewrite_basic description]
- * @return [type] [description]
- */
-function custom_rewrite_basic() {
-  add_rewrite_rule('^([0-9]+)/([0-9]+)/?', 'index.php?post_year=$matches[1]&post_week=$matches[2]', 'top');
-}
-add_action('init', __NAMESPACE__ . '\\custom_rewrite_basic');
-
-/**
- * [get_week_posts description]
- * @param  [type] $week [description]
- * @param  [type] $year [description]
- * @return [type]       [description]
- */
-function get_week_posts( $week = null, $year = null ) {
-  if(empty($week) || empty($year)) {
-    $week = date("W");
-    $year = date("Y");
-  }
-  $dateFrom = $year . "W" . $week;
-  $dateTo = $year . "W" . ($week+1);
-
-  $args = [
-    'post_type' => 'post',
-    'post_status' => 'publish',
-    'orderby' => 'date',
-    'order' => 'DESC',
-    'posts_per_page' => -1,
-    'date_query' => [
-      [
-        'after' => $dateFrom,
-        'before' => $dateTo,
-      ]
-    ]
-  ];
-  $query = new \WP_Query($args);
-  return $query;
-}
-
-/**
- * [test_input description]
- * @param  [type] $data [description]
- * @return [type]       [description]
- */
-function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  $data = esc_sql($data);
-  return $data;
-}
-
-/**
  * [force_login description]
  * @return [type] [description]
  */
@@ -112,30 +48,62 @@ function force_login() {
 add_action( 'parse_request', __NAMESPACE__ . '\\force_login', 1 );
 
 /**
- * [disable description]
- * @return [type] [description]
+ * Filter media library items to those belonging to the current user,
+ * if the user cannot edit others' posts.
+ *
+ * @param $wp_query
+ * @return mixed
  */
-function disable() {
-  if ( is_admin() ) {
-    $userdata = wp_get_current_user();
-    $user = new \WP_User($userdata->ID);
-    if ( !empty( $user->roles ) && is_array( $user->roles ) && $user->roles[0] == 'administrator' )
-      return true;
+function limit_media_library_to_own_items($wp_query) {
+  if (is_admin() && $wp_query->get('post_type') == 'attachment' && !current_user_can('edit_others_posts')) {
+      $wp_query->set('author', get_current_user_id());
   }
-  return false;
+  return $wp_query;
 }
-add_filter( 'show_password_fields', __NAMESPACE__ . '\\disable' );
-add_filter( 'allow_password_reset', __NAMESPACE__ . '\\disable' );
+add_filter('parse_query', __NAMESPACE__ . '\\limit_media_library_to_own_items');
 
 /**
- * [hide_login_nav description]
- * @return [type] [description]
+ * Hide "Back to Know The Thing"
+ * @return void
  */
-function hide_login_nav()
-{
-    ?><style>#nav,#backtoblog,#loginform{display:none} </style><?php
+function hide_backtoblog() {
+  ?>
+  <style>
+    #backtoblog {
+      display: none;
+    }
+  </style>
+  <?php
 }
-add_action( 'login_head',  __NAMESPACE__ . '\\hide_login_nav' );
+add_action('login_head',  __NAMESPACE__ . '\\hide_backtoblog');
+
+/**
+ * Configure 'Force Strong Passwords' plugin to only enforce
+ * strong passwords for users with the returned capabilities.
+ *
+ * @param array $caps
+ * @return array
+ */
+function fsp_caps_check($caps) {
+  return array(
+    'update_core',
+  );
+}
+add_filter('slt_fsp_caps_check', __NAMESPACE__ . '\\fsp_caps_check');
+
+/**
+ * Redirect users to the frontend after login, unless a redirect URL
+ * was specified.
+ */
+function login_redirect($redirect_to, $requested_redirect_to, $user) {
+  if (get_class($user) == 'WP_User') {
+    if (strpos($requested_redirect_to, '/wp-admin/') !== false) {
+      $redirect_to = get_home_url();
+    }
+  }
+  return $redirect_to;
+}
+add_filter('login_redirect', __NAMESPACE__ . '\\login_redirect', 10, 3);
 
 /**
  * [image_upload description]
@@ -298,3 +266,54 @@ function no_mo_dashboard() {
   }
 }
 //add_action('admin_init', __NAMESPACE__ . '\\no_mo_dashboard');
+
+function get_post_archive_months() {
+  global $wpdb;
+
+  $query = "SELECT MONTH(post_date) AS month,
+                   YEAR(post_date) AS year,
+                   COUNT(*) AS post_count
+            FROM {$wpdb->posts}
+            WHERE post_type = 'post'
+            AND post_status = 'publish'
+            GROUP BY MONTH(post_date), YEAR(post_date)
+            ORDER BY post_date DESC";
+  $months = $wpdb->get_results($query);
+
+  $years = array();
+  foreach ($months as $month) {
+    if (!isset($years[$month->year])) {
+      $years[$month->year] = array();
+    }
+
+    $years[$month->year][] = $month;
+  }
+
+  return $years;
+}
+
+/**
+ * Show all posts at once for archive and search results pages.
+ * Sets posts_per_page to -1.
+ *
+ * @param $query
+ */
+function show_all_posts($query) {
+  if ($query->is_main_query() && !is_admin() && ($query->is_archive() || $query->is_search()) ) {
+    $query->set('posts_per_page', '-1');
+  }
+}
+add_action('pre_get_posts', __NAMESPACE__ . '\\show_all_posts');
+
+function nicer_archive_title($title) {
+  if (is_month()) {
+    $title = get_the_date(_x('F Y', 'monthly archives date format'));
+  }
+
+  if (is_year()) {
+    $title = get_the_date(_x('Y', 'yearly archives date format'));
+  }
+
+  return $title;
+}
+add_filter('get_the_archive_title', __NAMESPACE__ . '\\nicer_archive_title');

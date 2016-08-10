@@ -1,60 +1,12 @@
 .sidebar {
-  background:lighten(#0b0c0c, 15%);
-  padding-top:20px;
-  padding-bottom:20px;
-  display: none;
+  background: @bg-secondary;
+  padding: 10px 20px;
 
   .widget {
+    padding: 10px 0;
     color:#fff;
     h3 {
       color: #fff;
-    }
-  }
-  .months-link {
-    display: block;
-    background: #555;
-    color: #fff;
-    padding: 10px;
-    font-size: 18px;
-    text-align: center;
-    margin: 10px 0;
-    text-decoration: none;
-    &:hover {
-      text-decoration: none;
-    }
-  }
-  .weeks {
-    list-style:none;
-    padding: 0;
-    margin: 0;
-    display: none;
-    &.active {
-      display: block;
-    }
-    li {
-      margin-bottom:5px;
-      a {
-        margin-bottom: 5px;
-        background: #444;
-        padding: 0 10px;
-        font-size: 16px;
-        display: block;
-        text-decoration: none;
-        line-height: 42px;
-        position: relative;
-
-        strong {
-          color: #fff;
-          background: #27ae60;
-          padding: 5px 10px;
-          border-radius: 5px;
-          margin-top: 7px;
-          text-align: center;
-          display: inline-block;
-          line-height: 15px;
-          float: right;
-        }
-      }
     }
   }
 }
@@ -62,12 +14,16 @@
 /* Small devices (tablets, 768px and up) */
 @media (min-width: @screen-sm-min) {
   .sidebar {
-    position: fixed;
-    height:100%;
-    display: block;
-  }
-  .widget_bug {
-    position: absolute;
-    bottom:50px;
+    display: flex;
+    flex-direction: column;
+
+    .widget {
+      flex: 0 0 auto;
+    }
+    .widget_archives {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
   }
 }

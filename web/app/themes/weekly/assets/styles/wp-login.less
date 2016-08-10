@@ -1,0 +1,39 @@
+/**
+ * Styling for wp-login
+ */
+
+.wp-social-login-provider-list {
+  padding: 0;
+  margin: 15px 0;
+}
+
+form .wp-social-login-widget {
+  display: none;
+}
+
+.oauth-btn {
+  display: block;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: 12px 12px;
+  height: 60px;
+  line-height: 60px;
+  font-size: 16px;
+  text-indent: 70px;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.13);
+  position: relative;
+
+  &, &:hover, &:focus, &:active, &:visited {
+    color: #72777c;
+  }
+
+  &:active {
+    top: 1px;
+  }
+
+  &.oauth-btn-google {
+    background-image: url('../images/google-icon.svg');
+    background-size: 36px 36px;
+  }
+}

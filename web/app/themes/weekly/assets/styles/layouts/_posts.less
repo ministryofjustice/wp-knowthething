@@ -1,22 +1,11 @@
 .main {
-  .category-drop {
-    left: 200px;
-    position: absolute;
-    top: 15px;
-  }
-  .week-beginning {
-    display:block;
-    background:#ddd;
-    padding:15px;
-    margin:0;
-  }
   article {
-    padding:15px;
+    padding: 15px;
     &:nth-child(2n) {
       background: #eee;
     }
     .entry-title {
-      margin-top:0px;
+      margin-top: 0px;
       a {
         text-decoration: none;
       }
@@ -46,6 +35,9 @@
     height:auto;
   }
 }
+.single_page .entry-content {
+  margin-top: 2em;
+}
 
 .modal-dialog {
   width: 90%;
@@ -54,16 +46,4 @@
 [data-twttr-id="twttr-sandbox-0"] {
   height: auto;
   padding: 0 !important;
-}
-
-.sidebar-primary .main {
-  padding: 0;
-}
-
-
-/* Small devices (tablets, 768px and up) */
-@media (min-width: @screen-sm-min) {
-  .sidebar-primary .main {
-    margin-left: 25%;
-  }
 }

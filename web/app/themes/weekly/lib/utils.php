@@ -1,6 +1,7 @@
 <?php
 
 namespace Roots\Sage\Utils;
+use DateTime;
 
 /**
  * Tell WordPress to use searchform.php from the templates/ directory
@@ -45,4 +46,23 @@ function url_compare($url, $rel) {
 function is_element_empty($element) {
   $element = trim($element);
   return !empty($element);
+}
+
+/**
+ * Human-friendly date string
+ * "about 2 hours ago"
+ * "on 15/02/2015"
+ *
+ * @param DateTime $date
+ * @return string
+ */
+function human_date($date) {
+  $friendly_cutoff = new DateTime('-1 month');
+
+  if ($date < $friendly_cutoff) {
+    return 'on ' . $date->format(get_option('date_format'));
+  }
+  else {
+    return 'about ' . human_time_diff($date->getTimestamp()) . ' ago';
+  }
 }

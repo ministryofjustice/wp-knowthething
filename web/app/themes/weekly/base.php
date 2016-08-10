@@ -24,7 +24,7 @@ if($parts[0] != 'auth' && $wp->request != 'callback'):
       get_template_part('templates/header');
     ?>
     <div class="wrap container-fluid" role="document">
-      <div class="content row">
+      <div class="content row content_grid">
         <?php if (Config\display_sidebar()) : ?>
           <aside class="sidebar" role="complementary">
             <?php include Wrapper\sidebar_path(); ?>
