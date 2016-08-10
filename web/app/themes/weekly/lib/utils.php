@@ -60,7 +60,7 @@ function human_date($date) {
   $friendly_cutoff = new DateTime('-1 month');
 
   if ($date < $friendly_cutoff) {
-    return 'on ' . $date->format(_x('F j, Y', 'daily archives date format'));
+    return 'on ' . $date->format(get_option('date_format'));
   }
   else {
     return 'about ' . human_time_diff($date->getTimestamp()) . ' ago';
