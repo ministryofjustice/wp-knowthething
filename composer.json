@@ -45,7 +45,7 @@
     "vlucas/phpdotenv": "~1.0.9",
     "johnpbloch/wordpress": "4.5.3",
     "roots/soil": "3.0.3",
-    "opauth/opauth": "0.4.*"
+    "wpackagist-plugin/wordpress-social-login": "^2.3"
   },
   "extra": {
     "installer-paths": {

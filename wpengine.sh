@@ -16,8 +16,14 @@ then
   else
     branch="develop"
   fi
-else
+elif [ "$environment" == "production" ]
+then
   branch="master"
+else
+  echo "Invalid environment supplied: $environment"
+  echo "Please invoke this script with a valid environment."
+  echo "Valid environments are: staging, production"
+  exit
 fi
 
 ###
@@ -61,16 +67,7 @@ cd "web/app/themes/${theme}"
 git checkout "$branch"
 npm install
 bower install
-if [ "$environment" == "staging" ]
-then
-  gulp
-elif [ "$environment" == "production" ]
-then
-  gulp --production
-else
-  echo "Invalid environment."
-  exit
-fi
+gulp --production
 cd "../../../.."
 
 ###
