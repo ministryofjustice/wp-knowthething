@@ -2,13 +2,20 @@
  * An extension of bootstrap/buttons
  */
 
-.btn-align-left {
-  text-align: left;
-}
-
 // Alternate buttons
 // --------------------------------------------------
 
 .btn-dark {
   .button-variant(@btn-dark-color; @btn-dark-bg; @btn-dark-border);
+}
+
+.btn-justified-badge {
+  overflow: hidden;
+
+  .btn-label {
+    float: left;
+  }
+  .badge {
+    float: right;
+  }
 }

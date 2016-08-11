@@ -57,9 +57,9 @@ else {
               $date = new DateTime($month->year . '-' . zeroise($month->month, 2) . '-01');
               $active = ($active_month == $month->month && $active_year == $month->year);
               ?>
-              <a href="<?php echo get_month_link($month->year, $month->month); ?>" class="btn btn-dark btn-block btn-align-left<?php echo $active ? ' active' : ''; ?>">
-                <?php echo $date->format('F'); ?>
-                <span class="badge pull-right"><?php echo $month->post_count; ?></span>
+              <a href="<?php echo get_month_link($month->year, $month->month); ?>" class="btn btn-dark btn-block btn-justified-badge<?php echo $active ? ' active' : ''; ?>">
+                <span class="btn-label"><?php echo $date->format('F'); ?></span>
+                <span class="badge"><?php echo $month->post_count; ?></span>
               </a>
             <?php endforeach; ?>
           </div>
