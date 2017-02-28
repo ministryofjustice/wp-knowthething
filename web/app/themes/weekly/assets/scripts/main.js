@@ -84,20 +84,6 @@ jQuery(document).ready(function($) {
 
   var ajaxurl = typeof SageJS !== 'undefined' ? SageJS.ajaxurl : "nothing";
 
-  $('#summernote').summernote({
-    height: 300,
-    toolbar: [
-      ['style', ['bold', 'italic', 'underline']],
-      ['para', ['ul', 'ol', 'paragraph']],
-      ['insert', ['picture', 'link', 'video']], // Fix video
-    ],
-    onImageUpload: function(files) {
-      for (i = 0; i < files.length; i++) {
-        uploadImage(files[i], this);
-      }
-    }
-  });
-
   var uploadImage = function(file, editor) {
     data = new FormData();
     data.append("file", file);
@@ -114,6 +100,20 @@ jQuery(document).ready(function($) {
       }
     });
   };
+
+  $('#summernote').summernote({
+    height: 300,
+    toolbar: [
+      ['style', ['bold', 'italic', 'underline']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['insert', ['picture', 'link', 'video']], // Fix video
+    ],
+    onImageUpload: function(files) {
+      for (i = 0; i < files.length; i++) {
+        uploadImage(files[i], this);
+      }
+    }
+  });
 
   $('.modal-submit').click(function() {
     if($('.add-modal .entry-form:visible').hasClass('standard')) {
