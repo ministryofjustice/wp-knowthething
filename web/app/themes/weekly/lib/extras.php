@@ -317,3 +317,18 @@ function nicer_archive_title($title) {
   return $title;
 }
 add_filter('get_the_archive_title', __NAMESPACE__ . '\\nicer_archive_title');
+
+/**
+ * Monkey patch to remove 'deprecated argument' notices originating from
+ * HipChat plugin's use of the add_options_page() function.
+ *
+ * The third parameter of add_options_page() should specify a capability,
+ * but HipChat plugin gives a numeric user level. These were deprecated in
+ * WordPress 2.0.0
+ */
+function hipchat_menu() {
+  add_options_page('HipChat', 'HipChat', 'manage_options', basename(__FILE__),
+    'hipchat_settings_page');
+}
+remove_action('admin_menu', 'hipchat_menu');
+add_action('admin_menu', __NAMESPACE__ . '\\hipchat_menu');
