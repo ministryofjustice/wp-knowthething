@@ -58,6 +58,7 @@
     "wpackagist-plugin/wordpress-social-login": "^2.3",
     "wpackagist-plugin/google-analytics-dashboard-for-wp": "4.9.6.2",
     "wpackagist-plugin/hipchat": "1.2",
+    "wpackagist-plugin/wp-native-php-sessions": "^0.6.0",
     "ministryofjustice/wp-rewrite-media-to-s3": "^0.1.0"
   },
   "extra": {
