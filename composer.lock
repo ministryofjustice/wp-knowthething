@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0cec96152df0e0169f24085010a15ead",
+    "content-hash": "7aaebdcc3c4d53272839813e0e282e20",
     "packages": [
         {
             "name": "composer/installers",
@@ -105,6 +105,50 @@
                 "zikula"
             ],
             "time": "2016-04-13T19:46:30+00:00"
+        },
+        {
+            "name": "cweagans/composer-patches",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cweagans/composer-patches.git",
+                "reference": "7cd5c6eb7e68b8f7436ce1a7b9fffa4418bf59c6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cweagans/composer-patches/zipball/7cd5c6eb7e68b8f7436ce1a7b9fffa4418bf59c6",
+                "reference": "7cd5c6eb7e68b8f7436ce1a7b9fffa4418bf59c6",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "composer/composer": "~1.0",
+                "phpunit/phpunit": "~4.6"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "cweagans\\Composer\\Patches"
+            },
+            "autoload": {
+                "psr-4": {
+                    "cweagans\\Composer\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Cameron Eagans",
+                    "email": "me@cweagans.net"
+                }
+            ],
+            "description": "Provides a way to patch Composer packages.",
+            "time": "2016-12-01T01:19:32+00:00"
         },
         {
             "name": "johnpbloch/wordpress",
@@ -450,7 +494,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/plugin/google-analytics-dashboard-for-wp.4.9.6.2.zip",
-                "reference": null,
+                "reference": "tags/4.9.6.2",
                 "shasum": null
             },
             "require": {
@@ -470,7 +514,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/plugin/hipchat.1.2.zip",
-                "reference": null,
+                "reference": "tags/1.2",
                 "shasum": null
             },
             "require": {
@@ -497,6 +541,11 @@
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
+            "extra": {
+                "patches_applied": {
+                    "Fix for 406 Session Identifier Missing errors": "https://github.com/miled/wordpress-social-login/compare/master...ollietreend:406-session-identifier-missing.patch"
+                }
+            },
             "homepage": "https://wordpress.org/plugins/wordpress-social-login/"
         },
         {
@@ -510,7 +559,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/plugin/wp-native-php-sessions.0.6.0.zip",
-                "reference": null,
+                "reference": "tags/0.6.0",
                 "shasum": null
             },
             "require": {

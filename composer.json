@@ -59,7 +59,8 @@
     "wpackagist-plugin/google-analytics-dashboard-for-wp": "4.9.6.2",
     "wpackagist-plugin/hipchat": "1.2",
     "wpackagist-plugin/wp-native-php-sessions": "^0.6.0",
-    "ministryofjustice/wp-rewrite-media-to-s3": "^0.1.0"
+    "ministryofjustice/wp-rewrite-media-to-s3": "^0.1.0",
+    "cweagans/composer-patches": "^1.6"
   },
   "extra": {
     "installer-paths": {
@@ -72,6 +73,11 @@
       "web/app/languages/plugins/": ["vendor:koodimonni-plugin-language"],
       "web/app/languages/themes/": ["vendor:koodimonni-theme-language"]
     },
-    "wordpress-install-dir": "web/wp"
+    "wordpress-install-dir": "web/wp",
+    "patches": {
+      "wpackagist-plugin/wordpress-social-login": {
+        "Fix for 406 Session Identifier Missing errors": "https://github.com/miled/wordpress-social-login/compare/master...ollietreend:406-session-identifier-missing.patch"
+      }
+    }
   }
 }
