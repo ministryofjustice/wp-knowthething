@@ -35,6 +35,22 @@ function excerpt_more() {
 add_filter('excerpt_more', __NAMESPACE__ . '\\excerpt_more');
 
 /**
+ * Force HTTPS
+ * Redirect all HTTP requests to HTTPS
+ */
+function force_https() {
+  $home_url = get_home_url();
+
+  // If this isn't an HTTPS request, but home_url is HTTPS
+  if (!is_ssl() && substr($home_url, 0, 6) == 'https:') {
+    $redirect_url = $home_url . $_SERVER['REQUEST_URI'];
+    wp_redirect($redirect_url);
+    exit;
+  }
+}
+add_action('parse_request', __NAMESPACE__ . '\\force_https', 1);
+
+/**
  * [force_login description]
  * @return [type] [description]
  */
@@ -45,7 +61,7 @@ function force_login() {
     is_user_logged_in() || auth_redirect();
   }
 }
-add_action( 'parse_request', __NAMESPACE__ . '\\force_login', 1 );
+add_action( 'parse_request', __NAMESPACE__ . '\\force_login', 2 );
 
 /**
  * Filter media library items to those belonging to the current user,
