@@ -7,7 +7,7 @@ machine:
 dependencies:
   override:
     - eval $(aws ecr get-login --region $AWS_DEFAULT_REGION)
-    - docker build --rm=false -t $ECR_REPOSITORY:$CIRCLE_SHA1 . | cat
+    - docker build --rm=false --build-arg COMPOSER_USER="$COMPOSER_USER" --build-arg COMPOSER_PASS="$COMPOSER_PASS" -t $ECR_REPOSITORY:$CIRCLE_SHA1 . | cat
 test:
   override:
     - /bin/true
