@@ -9,10 +9,10 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...          
       - docker build --build-arg COMPOSER_USER="$COMPOSER_USER" --build-arg COMPOSER_PASS="$COMPOSER_PASS" -t knowthething:$CODEBUILD_SOURCE_VERSION .
-      - docker tag knowthething:$CODEBUILD_SOURCE_VERSION eu-west-2.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/knowthething:$CODEBUILD_SOURCE_VERSION
+      - docker tag knowthething:$CODEBUILD_SOURCE_VERSION eu-west-2.dkr.ecr.613903586696.amazonaws.com/knowthething:$CODEBUILD_SOURCE_VERSION
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.eu-west-2.amazonaws.com/knowthething:$CODEBUILD_SOURCE_VERSION
+      - docker push 613903586696.dkr.ecr.eu-west-2.amazonaws.com/knowthething:$CODEBUILD_SOURCE_VERSION
       # - ./deploy-aws.sh knowthething-dev wp-dev "$ECR_REPOSITORY:branch-$CIRCLE_BRANCH"
