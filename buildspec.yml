@@ -1,4 +1,7 @@
 version: 0.1
+environment_variables:
+ plaintext:
+  BUILD_TAG: `date "+%Y%m%d%H%M%S"`
 phases:
   pre_build:
     commands:
@@ -8,12 +11,12 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - env TAG=`date "+%Y%m%d%H%M%S"`       
-      - docker build --build-arg COMPOSER_USER="$COMPOSER_USER" --build-arg COMPOSER_PASS="$COMPOSER_PASS" -t knowthething:$TAG .
-      - docker tag knowthething:$TAG eu-west-2.dkr.ecr.613903586696.amazonaws.com/knowthething:$TAG
+      - env BUILD_TAG=`date "+%Y%m%d%H%M%S"`       
+      - docker build --build-arg COMPOSER_USER="$COMPOSER_USER" --build-arg COMPOSER_PASS="$COMPOSER_PASS" -t knowthething:$BUILD_TAG .
+      - docker tag knowthething:$BUILD_TAG eu-west-2.dkr.ecr.613903586696.amazonaws.com/knowthething:$BUILD_TAG
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push 613903586696.dkr.ecr.eu-west-2.amazonaws.com/knowthething:$TAG
+      - docker push 613903586696.dkr.ecr.eu-west-2.amazonaws.com/knowthething:$BUILD_TAG
       # - ./deploy-aws.sh knowthething-dev wp-dev "$ECR_REPOSITORY:branch-$CIRCLE_BRANCH"
