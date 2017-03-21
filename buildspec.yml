@@ -11,11 +11,11 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - docker build --build-arg COMPOSER_USER="$COMPOSER_USER" --build-arg COMPOSER_PASS="$COMPOSER_PASS" -t knowthething:`cat BUILD_TAG.txt` .
-      - docker tag knowthething:`cat BUILD_TAG.txt` eu-west-2.dkr.ecr.613903586696.amazonaws.com/knowthething:`cat BUILD_TAG.txt`
+      - docker tag knowthething:`cat BUILD_TAG.txt` 613903586696.dkr.ecr.eu-west-2.amazonaws.com/wp/knowthething:`cat BUILD_TAG.txt`
   post_build:
     commands:
       - echo Using build tag `cat BUILD_TAG.txt`
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push 613903586696.dkr.ecr.eu-west-2.amazonaws.com/knowthething:`cat BUILD_TAG.txt`
+      - docker push 613903586696.dkr.ecr.eu-west-2.amazonaws.com/wp/knowthething:`cat BUILD_TAG.txt`
       # - ./deploy-aws.sh knowthething-dev wp-dev "$ECR_REPOSITORY:branch-$CIRCLE_BRANCH"
