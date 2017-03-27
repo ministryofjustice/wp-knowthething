@@ -6,7 +6,7 @@ phases:
       - $(aws ecr get-login --region eu-west-2)
   build:
     commands:
-      - echo -n `date "+%Y%m%d%H%M%S"` > BUILD_TAG.txt
+      - echo -n `git rev-parse --short HEAD` > BUILD_TAG.txt && echo -n -`date "+%Y%m%d%H%M"` >> BUILD_TAG.txt
       - echo Created build tag `cat BUILD_TAG.txt`
       - echo Build started on `date`
       - echo Building the Docker image...
