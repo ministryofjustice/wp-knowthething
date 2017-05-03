@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 ###
 # Build Script
@@ -7,7 +8,10 @@
 ##
 
 # Clean up the working directory (useful when building from local dev files)
-git clean -xdf
+if [ -d ".git" ]
+then
+	git clean -xdf
+fi
 
 # Add composer auth file
 if [ ! -z $COMPOSER_USER ] && [ ! -z $COMPOSER_PASS ]
@@ -34,4 +38,9 @@ npm install && bower install
 gulp --production
 
 # Remove node_modules and bower_components to (drastically) reduce image size
-rm -Rf node_modules bower_components auth.json
+rm -Rf node_modules bower_components
+
+cd ../../../..
+
+# Remove composer auth.json
+rm -f auth.json
