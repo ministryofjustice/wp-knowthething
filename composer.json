@@ -60,6 +60,7 @@
     "wpackagist-plugin/hipchat": "*",
     "wpackagist-plugin/wp-native-php-sessions": "*",
     "ministryofjustice/wp-rewrite-media-to-s3": "^0.1.0",
+    "wpackagist-plugin/classic-editor": "*",
     "cweagans/composer-patches": "^1.6"
   },
   "extra": {
